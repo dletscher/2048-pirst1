@@ -61,20 +61,16 @@ class Player(BasePlayer):
 		return best
 
 	def heuristic(self, state):
-		score = state.getScore()
-		board = state._board
-		empties = board.count(0)
-		merges = 0
-		for i, v in enumerate(board):
-			if v == 0: 
-				continue
-			r, c = divmod(i, 4)
-			if c < 3 and board[i+1] == v:
-				merges += 1
-			if r < 3 and board[i+4] == v:
-				merges += 1
-		
-		return score + empties * 1000 + merges * 2000
+		score     = state.getScore()
+		board     = state._board
+		empties   = board.count(0)
+		max_tile  = max(board)
+
+		corners     = (0, 3, 12, 15)
+		corner_idx  = board.index(max_tile)
+		corner_bonus = max_tile * 200 if corner_idx in corners else 0
+
+		return score + empties * 100 + corner_bonus
 		
 	def moveOrder(self, state):
 		return state.actions()
