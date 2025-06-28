@@ -61,8 +61,20 @@ class Player(BasePlayer):
 		return best
 
 	def heuristic(self, state):
-		empty = sum(1 for v in state._board if v==0)
-		return state.getScore() + empty * 100
+		score = state.getScore()
+		board = state._board
+		empties = board.count(0)
+		merges = 0
+		for i, v in enumerate(board):
+			if v == 0: 
+				continue
+			r, c = divmod(i, 4)
+			if c < 3 and board[i+1] == v:
+				merges += 1
+			if r < 3 and board[i+4] == v:
+				merges += 1
+		
+		return score + empties * 1000 + merges * 2000
 		
 	def moveOrder(self, state):
 		return state.actions()
