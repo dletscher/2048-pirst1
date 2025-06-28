@@ -62,7 +62,7 @@ class Player(BasePlayer):
 
 	def heuristic(self, state):
 		empty = sum(1 for v in state._board if v==0)
-		return state.getScore() + empty * 10
+		return state.getScore() + empty * 100
 		
 	def moveOrder(self, state):
 		return state.actions()
